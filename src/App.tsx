@@ -8,7 +8,6 @@ import columnNames from "./components/Table/columns";
 import Loader from "./components/Loader";
 import Modal from "./components/Modal";
 import EditPopup from "./components/EditPopup";
-// import mockData from "./data.json";
 import Shopping from "./images/Shopping";
 import Dollars from "./images/Dollars";
 import Category from "./images/Category";
@@ -32,7 +31,7 @@ function App() {
     category: "",
   });
   const [loader, setLoader] = useState(false);
-  const [disabledRows, setDisabledRows] = useState([]);
+  const [disabledRows, setDisabledRows] = useState<string[]>([]);
   const [isModalOpen, setModalOpen] = useState(false);
 
   const getData = useCallback(
@@ -70,8 +69,13 @@ function App() {
     setSelectedData({ ...selectedData, ...item });
   }
   function handleDisable(item: any) {
-    setDisabledRows((prev) => [...prev, item.name] as never[]);
+    if (disabledRows.includes(item.name)) {
+      setDisabledRows((prev) => prev.filter((name) => name !== item.name));
+    } else {
+      setDisabledRows((prev) => [...prev, item.name]);
+    }
   }
+
   function handleDelete(item: ITableData) {
     const deletedData = data.filter(
       (data: ITableData) => data.name !== item.name

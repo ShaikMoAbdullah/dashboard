@@ -4,6 +4,7 @@ import { ITable } from "./types";
 import Edit from "../../images/Edit";
 import Eye from "../../images/Eye";
 import Delete from "../../images/Delete";
+import Disable from "../../images/Disable";
 
 function Table({
   columns,
@@ -47,14 +48,17 @@ function Table({
             data.map((item: any) => (
               <tr
                 key={item.name}
-                className={`bg-zinc-800 py-8 border-y-slate-800 text-sm ${
-                  disabledRows.includes(item.name)
-                    ? "opacity-50 pointer-events-none"
-                    : ""
-                }`}
+                className={`bg-zinc-800 py-8 border-y-slate-800 text-sm`}
               >
                 {columns.map((col) => (
-                  <td key={col.accessor} className="text-left p-4 w-1/6">
+                  <td
+                    key={col.accessor}
+                    className={`text-left p-4 w-1/6 ${
+                      disabledRows.includes(item.name)
+                        ? "opacity-50 pointer-events-none"
+                        : ""
+                    }`}
+                  >
                     {item[col.accessor]}
                   </td>
                 ))}
@@ -64,7 +68,11 @@ function Table({
                   }`}
                 >
                   <span
-                    className="text-green-500 cursor-pointer"
+                    className={`text-green-500 cursor-pointer ${
+                      disabledRows.includes(item.name)
+                        ? "opacity-50 pointer-events-none"
+                        : ""
+                    }`}
                     onClick={() => handleEdit(item)}
                   >
                     <Edit />
@@ -73,7 +81,7 @@ function Table({
                     className="text-pink-500 cursor-pointer"
                     onClick={() => handleDisable(item)}
                   >
-                    <Eye />
+                    {disabledRows.includes(item.name) ? <Disable /> : <Eye />}
                   </span>
                   <span
                     className="text-red-500 cursor-pointer"
